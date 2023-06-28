@@ -1,0 +1,20 @@
+.parent__form{
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    background: radial-gradient(circle at 53% 52%, rgba(255, 79, 3, 0.767) 0%, rgba(255, 0, 0, 0.123) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.parent__form-bg img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    object-fit: cover;
+}
