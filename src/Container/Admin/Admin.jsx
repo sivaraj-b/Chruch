@@ -44,7 +44,7 @@ function Admin() {
             </div>
             <div className='admin__form__content'>
                 <div className='admin__form__content-align'>
-                    <div style={{height:"60px"}}>
+                    <div style={{height:"40px"}}>
                     <div className='admin__form__content-name'>
                         <FaUserLock/>
                         <input type="text" placeholder='Name' name='name' value={name} onChange={(e)=>{
@@ -54,7 +54,7 @@ function Admin() {
                     </div>
                       {nameErr&&<p>Please Enter Valid Name </p>}
                     </div>
-                    <div style={{height:"60px"}}>
+                    <div style={{height:"40px"}}>
                     <div className='admin__form__content-name'>
                         <RiLockPasswordFill/>
                         <input type="password" placeholder='Password' name='password' value={password} onChange={(e)=>{

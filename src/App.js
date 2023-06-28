@@ -1,12 +1,14 @@
 
 import {  Route, Router, Routes } from 'react-router-dom';
 import './App.css';
-import {Form} from './Container'
+import {Form,Admin} from './Container'
 
 function App() {
   return (
    <Routes>
-      <Route path="/" element={<Form/>} />
+      <Route path="/" element={<Admin/>} />
+      <Route path="/form" element={<Form/>} />
+
    </Routes>
   );
 }

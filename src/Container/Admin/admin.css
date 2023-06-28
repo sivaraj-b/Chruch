@@ -59,6 +59,7 @@
     justify-content: center;
     align-items: center;
     gap: 2rem;
+    margin-top: 1.5rem;
 }
 
 .admin__form__content-align{
@@ -111,10 +112,11 @@
 
 @media screen and (max-width: 768px) {
    .admin__form{
-        min-width: 300px;
-        height: 350px;
+        min-width: 380px;
+        height: 380px;
    }
 }
+
 
 @media screen and (max-width: 458px) {
     .admin__form{
@@ -132,3 +134,22 @@
         height: 380px;
    }
 }   
+
+@media screen and (max-height: 368px){
+    .admin__form{
+        min-width: 280px;
+        height: 300px;
+   }
+   .admin__form-firstChild h1{
+     font-size: 20px;
+   }
+   .admin__form__content{
+    gap: 1rem;
+   }
+   .admin__form__content-name input{
+    font-size: 15px;
+   }
+   .admin__form__content{
+    margin-top: 1rem;
+   }
+}
