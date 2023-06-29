@@ -1,0 +1,28 @@
+.form-logo{
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+
+}
+.form-logo img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    top: 0;
+    left: -120px;
+    border-radius: 50%;
+}
+@media screen and (max-width:385px){
+    .form-logo h1{
+        font-size: 20px;
+    }
+    .form-logo img{
+       
+        display: none;
+    }
+}
