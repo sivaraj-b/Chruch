@@ -8,7 +8,7 @@ function Form() {
         <div className='parent__form-bg'>
             <img src={Formbg} alt="" />
         </div>
-        <div>
+        <div className=''>
             <MainForm/>
         </div>
     </div>

@@ -1,9 +1,278 @@
 .form{
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px; 
-    background-color: whitesmoke;
+    background-color: rgba(255, 72, 0, 0.377);
     width: 100%;
     height: 100%;
     padding: 1.5rem 2rem;
     z-index: 1;
     border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1rem;
+    color: white;
+
+}
+
+.form-validate{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+.form-detail{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex: 1;
+    position: relative;
+}
+.form-detail div{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.form-img {
+    position: relative;
+    display: inline-block;
+}
+.form-img input{
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+.form-img label {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #ffff;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black !important;
+  }
+
+.form-detail-address{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+
+
+.form__address{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex:1
+}
+
+.form  .form-detail-address  .form__child-align{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    
+    
+}
+
+.form__child-align p{
+    font-size: 20px;
+}
+
+.form__child-align h4{
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.form__child-align button{
+    padding: 5px;
+    border: none;
+    outline: none;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    width: 50px;
+    font-size: 18px;
+}
+
+.btn-submit{
+    
+    width: 100%;
+    text-align: center;
+}
+
+
+.btn-submit button{
+    padding: 1rem;
+    width: 200px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    color: #ffff;
+    background-color: rgba(36, 171, 250, 0.932);
+    font-size: 18px
+}
+
+.btn-submit button:hover{
+    transform: scale(1.1);
+}
+
+.form-detail label{
+    font-size: 18px;
+    font-weight: 700;
+}
+.form-detail input{
+    padding: 0.5rem;
+    width: 400px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    font-size: 15px;
+}
+
+.form-detail-address label{
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.form-detail-address textarea{
+    padding: 1rem;
+    width: 400px;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid grey;
+    font-size: 15px;
+   
+}
+
+.add:hover{
+    transform: scale(1.1);
+}
+.sub:hover{
+    transform: scale(1.1);
+}
+
+
+@media screen and (max-width: 900px) {
+   .form-detail input{
+        width: 250px;
+   }
+   .form-detail-address textarea{
+    width: 250px;
+    overflow: hidden;
+   }
+   .form-detail-address textarea ::-webkit-scrollbar{
+    display: none;
+   }
+   .form__child-align button{
+    width: 25px;
+   }
+   .btn-submit button{
+    padding: 0.5rem;
+    width: 100px;
+   }
+}
+@media screen and (max-width: 600px){
+    .form-detail{
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+    .form-detail-address{
+        flex-direction: column;
+    }
+    .form-detail div{
+        flex-direction: row;
+        align-items:center ;
+        gap: 150px;
+        flex-wrap: wrap;
+    }
+    .form-detail label{
+       
+        width: 0;
+       
+    }
+    .form-detail input{
+        
+        justify-content: flex-start;
+        align-items: flex-start;
+        text-align: left;
+    }
+    .form__address{
+        flex-direction: row;
+        align-items: center;
+        gap: 80px;
+    }
+    .form{
+        padding: 0.2rem;
+    }
+}
+
+@media screen and (max-width: 430px) {
+    .form-detail div{
+        gap: 120px;
+    }
+    .form__address{
+        gap: 50px;
+    }
+}
+
+@media screen and (max-width:395px){
+    .form-detail div{
+        flex-direction: column;
+        gap:0px;
+        align-items: flex-start;
+    }
+    .form{
+        margin-top:2px ;
+    }
+    .form-detail label{
+        font-size: 15px;
+    }
+    .form-validate label{
+        font-size: 15px;
+    }
+    .form-detail input{
+        padding: 2px;
+        border-radius: 5px;
+    }
+    .form__address{
+        flex-direction: column;
+        gap: 0;
+        align-items: flex-start;
+    }
+    .form-validate{
+        gap: 0.2rem;
+    }
+    .form__address label{
+        font-size: 15px;
+    }
+    .form-detail-address{
+        gap: 0.5rem;
+    }
+    .form__child-align h4{
+        font-size: 15px;
+    }
+    .form__child-align p{
+        font-size: 15px;
+    }
+    .btn-submit button{
+        padding: 0.5rem;
+        font-size: 12px;
+    }
 }
