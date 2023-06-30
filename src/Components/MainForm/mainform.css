@@ -281,3 +281,13 @@
         font-size: 12px;
     }
 }
+
+.placeholder-color::placeholder {
+    color: red; /* Replace with your desired color */
+    
+  }
+
+  .form .placeholder-color{
+    border: 2px solid red;
+  }
+  

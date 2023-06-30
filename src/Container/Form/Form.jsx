@@ -9,7 +9,7 @@ function Form() {
             <img src={Formbg} alt="" />
         </div>
         <div className=''>
-            <MainForm/>
+            <MainForm name='Family Detail'/>
         </div>
     </div>
   )
