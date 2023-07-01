@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import './mainform.css'
 import { v4 as uuidv4 } from 'uuid';
 import FormName from '../FormName/FormName'
@@ -8,6 +8,7 @@ import { useGlobalContext } from '../../Context/Context';
 
 
 function MainForm({name}) {
+  const [count,setCount] = useState(0);
   const [family,setFamily] =useState({
       id:"",
       name:"",
@@ -38,7 +39,7 @@ function MainForm({name}) {
   })
 
 //temp data
-const {tempData,dispatch} =useGlobalContext()
+const {tempData,dispatch,parentId} =useGlobalContext()
 
 
 
@@ -52,9 +53,34 @@ const {tempData,dispatch} =useGlobalContext()
     // navigate to Another Page
   const navigate =useNavigate()
  //take id from url
-const {parent}=useParams()
+let {parent}=useParams()
 
+useEffect(()=>{
+  if(parent){
+    dispatch({type:"TRACK__PARENT__ID",parent})
 
+  }else{
+    let foundDetail  = tempData.find((item)=>item.id === parentId)
+        
+    if(foundDetail){
+      setFamily({...family,
+        name:foundDetail.name,
+        spouse:foundDetail.spouse,
+        gender:foundDetail.gender,
+        phoneNo:foundDetail.phoneNo,
+        weddingDay:foundDetail.weddingDay,
+        address:foundDetail.address,
+        child:foundDetail.child,
+        dob:foundDetail.dob,
+        isMarried:foundDetail.isMarried,
+        isBaptism:foundDetail.isBaptism,
+        baptism:foundDetail.baptism,
+      
+      
+      })
+  } 
+  }
+},[parent])
 
 //onChange Function
 const changeHandler =(e)=>{
@@ -71,9 +97,21 @@ const changeHandler =(e)=>{
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
 // Add Child Function 
 const addChild =(e)=>{
   e.preventDefault();
+  setCount((pre)=>pre+1)
  //checking parent is there or not 
 if(parent){
 
@@ -115,13 +153,44 @@ if(parent){
             navigate(`/child/${addChild.id}`)
 
         }else{
-                //id did not prest in state search in child array
-             const childArr = tempData.map((item)=>item.child).flatMap(twoDArray => twoDArray.flat()).some((item)=>item.id === parent) 
-                  // Here only We Stop Toady
+               
+
+                const updateNestedArray = (arr, targetId, newId) => {
+                  return arr.map(obj => {
+                    if (obj.id === targetId) {
+                      return {...obj ,child:[...obj.child,addChild]}
+                    } else if (Array.isArray(obj.child)) {
+                      return {
+                        ...obj,
+                        child: updateNestedArray(obj.child ,targetId, newId)
+                      };
+                    }
+                    return obj;
+                  });
+                };
+                  let addInChildArr = updateNestedArray(tempData,parent,addChild.id)
+                 
+                 dispatch({type:'ADD__CHILD__IN__CHILD__ELE',parent,addInChildArr})
+                 setFamily({...family,
+                  id:"",
+                  name:"",
+                  spouse:"",
+                  address:"",
+                  phoneNo:"",
+                  dob:"",
+                  weddingDay:"",
+                  gender:"male",
+                  isBaptism:false,
+                  baptism:"",
+                  isMarried:false,
+                  child:[],
+                
+                })
+                navigate(`/child/${addChild.id}`)
 
         }
      
-    
+
   }else{
     //if false check the name and spouse what is false
     if(!family.name.trim()){
@@ -169,7 +238,267 @@ if(parent){
 const removeChild=()=>{
   navigate(-1)
 }
-  console.log(tempData)
+
+
+
+
+
+
+
+
+
+
+
+//It will Control Submit button
+const handleClick=(e)=>{
+
+  e.preventDefault();
+  if(parent){
+
+    if(family.isMarried){
+
+      if(family.name.trim()&&family.dob.trim()&&family.phoneNo.trim()&&family.address.trim()&&family.spouse.trim()&&family.weddingDay){
+          
+        let addChild = {
+          name:family.name,
+          spouse:family.spouse,
+          address:family.address,
+          phoneNo:family.phoneNo,
+          dob:family.dob,
+          weddingDay:family.weddingDay,
+          gender:family.gender,
+          isBaptism:family.isBaptism,
+          baptism:family.baptism,
+          isMarried:family.isMarried,
+          child:family.child,
+        }
+
+        const updateNestedArray = (arr, targetId, newId) => {
+          return arr.map(obj => {
+            if (obj.id === targetId) {
+              return {...obj ,child:[...obj.child,addChild]}
+            } else if (Array.isArray(obj.child)) {
+              return {
+                ...obj,
+                child: updateNestedArray(obj.child ,targetId, newId)
+              };
+            }
+            return obj;
+          });
+        };
+          let addInChildInNestedArr = updateNestedArray(tempData,parent,addChild.id)
+          console.log(addInChildInNestedArr)
+        const addInChildArr =[...addInChildInNestedArr,addChild]
+     dispatch({type:'ADD__CHILD__IN__CHILD__ELE',parent,addInChildArr})
+     const findElement = (arr, id) => {
+      let foundElement = null;
+  
+      arr.find(obj => {
+        if (id === obj.id) {
+          foundElement = obj;
+          return true;
+        } else if (Array.isArray(obj.child)) {
+          const foundChild = findElement(obj.child, parent);
+          if (foundChild) {
+            foundElement = foundChild;
+            return true;
+          }
+        }
+        return false;
+      });
+  
+      return foundElement;
+    };
+    let foundDetail = findElement(tempData,parent)
+    if(foundDetail){
+      console.log(foundDetail)
+        setFamily({...family,
+          name:foundDetail.name,
+          spouse:foundDetail.spouse,
+          gender:foundDetail.gender,
+          phoneNo:foundDetail.phoneNo,
+          weddingDay:foundDetail.weddingDay,
+          address:foundDetail.address,
+          child:foundDetail.child,
+          dob:foundDetail.dob,
+          isMarried:foundDetail.isMarried,
+          isBaptism:foundDetail.isBaptism,
+          baptism:foundDetail.baptism,
+        
+        
+        })
+        setCount((pre)=>pre-1)
+        navigate(-1)
+    }  
+     
+
+
+
+    }
+
+
+
+    }else{
+
+      if(family.name.trim()&&family.dob.trim()&&family.phoneNo.trim()&&family.address.trim()){
+          
+          let addChild = {
+                name:family.name,
+          spouse:family.spouse,
+          address:family.address,
+          phoneNo:family.phoneNo,
+          dob:family.dob,
+          weddingDay:family.weddingDay,
+          gender:family.gender,
+          isBaptism:family.isBaptism,
+          baptism:family.baptism,
+          isMarried:family.isMarried,
+          child:family.child,
+          }
+
+          const updateNestedArray = (arr, targetId, newId) => {
+            return arr.map(obj => {
+              if (obj.id === targetId) {
+                return {...obj ,child:[...obj.child,addChild]}
+              } else if (Array.isArray(obj.child)) {
+                return {
+                  ...obj,
+                  child: updateNestedArray(obj.child ,targetId, newId)
+                };
+              }
+              return obj;
+            });
+          };
+            let addInChildInNestedArr = updateNestedArray(tempData,parent,addChild.id)
+            console.log(addInChildInNestedArr)
+          const addInChildArr =[...addInChildInNestedArr,addChild]
+       dispatch({type:'ADD__CHILD__IN__CHILD__ELE',parent,addInChildArr})
+       const findElement = (arr, id) => {
+        let foundElement = null;
+    
+        arr.find(obj => {
+          if (id === obj.id) {
+            foundElement = obj;
+            return true;
+          } else if (Array.isArray(obj.child)) {
+            const foundChild = findElement(obj.child, parent);
+            if (foundChild) {
+              foundElement = foundChild;
+              return true;
+            }
+          }
+          return false;
+        });
+    
+        return foundElement;
+      };
+      let foundDetail = findElement(tempData,parent)
+   
+      if(foundDetail && parent){
+        console.log(foundDetail)
+          setFamily({...family,
+            name:foundDetail.name,
+            spouse:foundDetail.spouse,
+            gender:foundDetail.gender,
+            phoneNo:foundDetail.phoneNo,
+            weddingDay:foundDetail.weddingDay,
+            address:foundDetail.address,
+            child:foundDetail.child,
+            dob:foundDetail.dob,
+            isMarried:foundDetail.isMarried,
+            isBaptism:foundDetail.isBaptism,
+            baptism:foundDetail.baptism,
+          
+          
+          })
+          setCount(prv=>prv-1)
+          navigate(-1)
+      }  
+       
+
+
+
+      }
+
+
+    }
+
+
+
+  }else{
+          // HERE ONLY STOP YESTERDAY
+    if(family.isMarried){
+      if(family.name&&family.dob&&family.phoneNo&&family.spouse&&family.weddingDay&&family.address){
+              let AddMainData=[]
+              if(parentId){
+                AddMainData= tempData.map((item)=>{
+                  if(item.id=== parentId){
+                      return {...item,name:family.name,dob:family.dob,phoneNo:family.phoneNo,spouse:family.spouse,weddingDay:family.weddingDay,child:family.child,address:family.address}
+                  }else{
+                    return item
+                  }
+            })
+              }else{
+                AddMainData=[...tempData,{name:family.name,dob:family.dob,phoneNo:family.phoneNo,spouse:family.spouse,weddingDay:family.weddingDay,child:family.child,address:family.address}]
+              }
+          console.log("IN")
+          dispatch({type:"ADD__MAIN__ELE",AddMainData})
+          setFamily({...family,
+            id:"",
+            name:"",
+            spouse:"",
+            address:"",
+            phoneNo:"",
+            dob:"",
+            weddingDay:"",
+            gender:"male",
+            isBaptism:false,
+            baptism:"",
+            isMarried:false,
+            child:[],
+          
+          })
+          navigate('/dashboard')
+      }
+    }else{
+      if(family.name&&family.dob&&family.phoneNo&&family.address&&family.gender){
+        const AddMainData = [...tempData,{id:uuidv4(),name:family.name, address:family.address, gender:family.gender,isBaptism:family.isBaptism,isMarried:family.isMarried,baptism:family.baptism,spouse:family.spouse,phoneNo:family.phoneNo,dob:family.dob,child:family.child,weddingDay:family.weddingDay}]
+        console.log("IN IN")
+    dispatch({type:"ADD__MAIN__ELE",AddMainData})
+    setFamily({...family,
+      id:"",
+      name:"",
+      spouse:"",
+      address:"",
+      phoneNo:"",
+      dob:"",
+      weddingDay:"",
+      gender:"male",
+      isBaptism:false,
+      baptism:"",
+      isMarried:false,
+      child:[],
+      
+    })
+
+        navigate('/dashboard')
+
+      }
+    }
+
+    
+
+
+
+  }
+
+
+
+
+
+}
+
+
 
   return (
     <form className='form'>
@@ -237,7 +566,7 @@ const removeChild=()=>{
            <h4>Child:</h4>
             <div  className='form__child-align'>
                  <button onClick={addChild} type='button' className='add'>+</button>
-                    <p>0</p>
+                    <p>{family.child.length}</p>
                  <button onClick={removeChild} type='button' className='sub'>-</button>
             </div>
           </div>
@@ -271,7 +600,7 @@ const removeChild=()=>{
             </div>
         )}
       <div className='btn-submit'>
-      <button type='submit'>Submit</button>
+      <button onClick={handleClick} type='submit'>Submit</button>
       </div>
     </form>
   )
