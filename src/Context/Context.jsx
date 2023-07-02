@@ -6,7 +6,7 @@ const tempFamilyData= localStorage.getItem("tempData")
     : [];
     const parentTrack= localStorage.getItem("parentId")
     ? JSON.parse(localStorage.getItem("parentId"))
-    : [];
+    : "";
 const FamilyData= localStorage.getItem("familyData")
 ? JSON.parse(localStorage.getItem("familyData"))
 : [];
