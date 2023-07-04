@@ -5,10 +5,10 @@ function Child() {
   return (
     <div className='parent__form'>
         <div className='parent__form-bg'>
-            <img src={Formbg} alt="" />
+            <img src="https://images.pexels.com/photos/1252869/pexels-photo-1252869.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="" />
         </div>
         <div >
-            <MainForm name='Child Detail'/>
+            <MainForm name='Child Detail' />
         </div>
     </div>
   )

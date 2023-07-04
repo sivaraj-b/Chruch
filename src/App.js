@@ -9,7 +9,7 @@ function App() {
       <Route path="/" element={<Admin/>} />
       <Route path='/dashboard'  element={<Dashbord/>}/>
       <Route path="/form" element={<Form/>} />
-      <Route path='/child/:parent' element={<Child/>}/>
+      <Route path='/child/:parent/:childId' element={<Child/>}/>
    </Routes>
   );
 }

@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import DataTable from "react-data-table-component";
+import { useGlobalContext } from "../../Context/Context";
 
 
 
@@ -40,7 +41,9 @@ function Dashbord() {
     { id: 29, name: "Jane" },
     { id: 30, name: "Bob" },
   ];
-  const [data, setData] = useState(initialData);
+
+
+  const [datas, setData] = useState(initialData);
 
   const columns = [
     {
@@ -87,7 +90,7 @@ function Dashbord() {
   return (
     <DataTable
     columns={columns}
-    data={data}
+    data={datas}
     pagination
     highlightOnHover
     striped
@@ -96,3 +99,7 @@ function Dashbord() {
 }
 
 export default Dashbord
+
+
+
+
