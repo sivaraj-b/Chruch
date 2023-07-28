@@ -1,11 +1,12 @@
 .parent__form{
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     position: relative;
-    background: radial-gradient(circle at 53% 52%, rgba(255, 79, 3, 0.767) 0%, rgba(255, 0, 0, 0.123) 100%);
+    background: linear-gradient(314deg, rgba(255, 255, 0, 1) 0%, rgba(0, 188, 212, 1) 0%, rgba(0, 188, 212, 0.83) 28%, rgba(167, 61, 167, 0.78) 62%, rgba(180, 73, 180, 0.91) 100%);
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
    
 }
 

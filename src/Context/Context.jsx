@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
 import { createContext,useContext,useReducer } from "react";
 import { reducer } from '../Reducer/reducer';
-const tempFamilyData= localStorage.getItem("tempData")
-    ? JSON.parse(localStorage.getItem("tempData"))
-    : [];
+
     const parentTrack= localStorage.getItem("parentId")
     ? JSON.parse(localStorage.getItem("parentId"))
     : "";
@@ -15,7 +13,7 @@ const GlobalContext =createContext();
 export const useGlobalContext = ()=>useContext(GlobalContext);
 const initialState = {
     data:FamilyData,
-    tempData:[...FamilyData,...tempFamilyData],
+    tempData:[],
     editId:'',
     isEdit:false,
     parentId:parentTrack,
@@ -26,6 +24,7 @@ function Context({children}) {
     const [state,dispatch] =useReducer(reducer,initialState)
     useEffect(()=>{
       localStorage.setItem('tempData',JSON.stringify(state.tempData));
+
   },[state.tempData])
     
   useEffect(()=>{

@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+
+
+
+
+
+.dashboard h1{
+    font-family: 'Sonsie One', cursive;
+    background: linear-gradient(184deg, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.884) 57%, rgb(207, 37, 165) 100%);
+      -webkit-background-clip: text;
+      -moz-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    font-size: 40px;
+}
+
+.dashboard-nav{
+    background-color: rgb(166 0 255 / 95%);
+    padding: 1rem 0;
+    color: white;
+    border-radius:0 50% 0 0;
+}
+
+.dashboard-nav a{
+    text-decoration: none;
+    color: white;
+}
+
+.dashboard-nav div{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.edit-btn{
+    outline:none;
+    border: none;
+    color: rgb(22, 170, 59);
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.remove-btn{
+    outline:none;
+    border: none;
+    color: rgba(238, 13, 13, 0.877);
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.btn-dashboard{
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    gap:2rem
+}
+.input-div input{
+    padding: 10px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    width: 50%;
+    background-color: #d1d5db;
+    color: black;
+    
+}
+.input-div {
+    background-color: rgb(246, 243, 248) ;
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    background-color: transparent;
+}
+.img-certificate{
+    outline: none;
+    border: none;
+    background-color:transparent;
+    color: rgb(0, 60, 255);
+    cursor: pointer;
+}
+.padding-table{
+    padding: 1rem 4rem;
+}
+
+
+.custom-id-column{
+    color: red;
+}
+
+@media screen and (max-width: 780px) {
+    .hide-id-column {
+      display: none; /* Hide the id column for smaller screens */
+    }
+  }

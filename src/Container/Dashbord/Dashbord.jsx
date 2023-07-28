@@ -1,100 +1,219 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import './dashbord.css'
 import DataTable from "react-data-table-component";
 import { useGlobalContext } from "../../Context/Context";
-
-
+import {AiOutlineUserAdd} from 'react-icons/ai'
+import {BiEdit} from 'react-icons/bi'
+import {RiDeleteBin6Line} from 'react-icons/ri'
+import {Link, useNavigate} from 'react-router-dom'
+import { saveAs } from 'file-saver';
 
 
 function Dashbord() {
-  
-  
-  const initialData = [
-    { id: 1, name: "John" },
-    { id: 2, name: "Jane" },
-    { id: 3, name: "Bob" },
-    { id: 4, name: "John" },
-    { id: 5, name: "Jane" },
-    { id: 6, name: "Bob" },
-    { id: 7, name: "John" },
-    { id: 8, name: "Jane" },
-    { id: 9, name: "Bob" },
-    { id: 10, name: "John" },
-    { id: 11, name: "Jane" },
-    { id: 12, name: "Bob" },
-    { id: 13, name: "John" },
-    { id: 14, name: "Jane" },
-    { id: 15, name: "Bob" },
-    { id: 16, name: "John" },
-    { id: 17, name: "Jane" },
-    { id: 18, name: "Bob" },
-    { id: 19, name: "John" },
-    { id: 20, name: "Jane" },
-    { id: 21, name: "Bob" },
-    { id: 22, name: "John" },
-    { id: 23, name: "Jane" },
-    { id: 24, name: "Bob" },
-    { id: 25, name: "John" },
-    { id: 26, name: "Jane" },
-    { id: 27, name: "Bob" },
-    { id: 28, name: "John" },
-    { id: 29, name: "Jane" },
-    { id: 30, name: "Bob" },
-  ];
+ 
+    const navigate = useNavigate()
 
 
-  const [datas, setData] = useState(initialData);
+  const {data,dispatch} = useGlobalContext()
+  function flattenArray(arr) {
+    let result = [];
+  
+    function flattenHelper(arr) {
+      arr.forEach(item => {
+        result.push(item);
+        if (item.child && item.child.length > 0) {
+          flattenHelper(item.child);
+        }
+      });
+    }
+  
+    flattenHelper(arr);
+    return result;
+  }
+
+  
+
+  const flattenedArray = flattenArray(data);
+
+
+  const [datas, setData] = useState(flattenedArray);
+  const [filterData , setFilterData] = useState(flattenedArray)
+
+  useEffect(()=>{
+
+   let Reset = flattenArray(data)
+    setData(Reset)
+
+  },[data]);
+
+ 
+
+  const customStyle = {
+    headRow: {
+      style: {
+        backgroundColor: 'blue',
+        color: 'white',
+        fontWeight: '900',
+        fontSize: '1.5em',
+        boxShadow: "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
+      },
+    },
+   
+  };
+const handleDownload = async (baptism) => {
+  try {
+    const response = await fetch(baptism);
+    const blob = await response.blob();
+    const fileName = 'image.jpg'; // You can change the file extension as needed based on the image type
+    saveAs(blob, fileName);
+  } catch (error) {
+    console.error('Error downloading the image:', error);
+  }
+};
+
+
+
+const handleClick = (row) => {
+  if (row.baptism) {
+    handleDownload(row.baptism);
+  }
+};
+
 
   const columns = [
     {
-      name: "ID",
-      selector: "id",
+      name: 'Id',
+      selector: 'id',
       sortable: true,
+      className: 'custom-id-column'
     },
     {
       name: "Name",
       selector: "name",
       sortable: true,
+      style: {
+        fontSize: '1.2em' // Change the font size here
+      }
+    },
+    {
+      name: "Baptism",
+      cell: (row) =>
+        row.baptism ? (
+          <button className="img-certificate"
+           
+            onClick={() => handleClick(row)}
+          
+          >
+              Certificate
+          </button>
+        ) : (
+          <span style={{color:'black'}}>No Certificate</span>
+        ),
     },
     {
       name: "Action",
       cell: (row) => (
-        <div>
-          <button onClick={() => handleEdit(row)}>Edit</button>
-          <button onClick={() => handleRemove(row)}>Remove</button>
+        <div className="btn-dashboard">
+          <button className="edit-btn" onClick={() => handleEdit(row)}><BiEdit fontSize={20}/></button>
+          <button className="remove-btn" onClick={() => handleRemove(row)}><RiDeleteBin6Line fontSize={20}/></button>
         </div>
       ),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
     },
-  ];
+  ]
+  
   
   
   const handleEdit = (row) => {
-    // Implement the edit logic here
-    console.log("Edit:", row);
+    console.log("INNNNNNNNNN")
+    dispatch({type:"EDIT__USER",editId:row.id})
+        navigate(`/form`)
+
+
   };
   
   const handleRemove = (row) => {
     // Implement the remove logic here
-    setData((prevData) => prevData.filter((item) => item.id !== row.id));
+    function removeNestedObject(nestedArray, idToRemove) {
+      function remove(obj) {
+        obj.child = obj.child.filter(child => {
+          if (child.id === idToRemove) {
+            return false; // Exclude the matching object from the child array
+          }
+          remove(child); // Recursively remove from the child array
+          return true; // Keep the non-matching objects in the child array
+        });
+      }
+    
+      nestedArray = nestedArray.filter(obj => {
+        if (obj.id === idToRemove) {
+          return false; // Exclude the matching object from the top-level array
+        }
+        remove(obj); // Recursively remove from the child arrays
+        return true; // Keep the non-matching objects in the top-level array
+      });
+    
+      return nestedArray;
+    }
+      console.log(row.id)
+      let RemovedData = removeNestedObject(data, row.id);
+      console.log(RemovedData)
+        dispatch({type: "REMOVED__DATA__IN__STATE__ARR",RemovedData})
+
   };
   
 
+  const handleFilter =(e)=>{
+      const newData = filterData.filter((row)=>row.name.toLowerCase().includes(e.target.value.toLowerCase()) )
+      setData(newData)
 
+  }
 
-
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.removeItem('parentId');
+      localStorage.removeItem('tempData');
+      
+    };
+  
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
 
   return (
-    <DataTable
+      <div className="dashboard">
+          <nav className="dashboard-nav">
+              <div>
+                <h1>FAMILY</h1>
+                <div>
+                <AiOutlineUserAdd fontSize={30}/>
+                <Link  to='/form'>Create</Link>
+                </div>
+              </div>
+          </nav>
+          <div className="input-div">
+              <input placeholder="search User Name"  onChange={handleFilter}/>
+          </div>
+         <div className="padding-table">
+         <DataTable
+    
     columns={columns}
     data={datas}
+    customStyles={customStyle}
     pagination
     highlightOnHover
-    striped
+
   />
+         </div>
+
+      </div>
   )
 }
 

@@ -12,6 +12,7 @@
     align-items: flex-start;
     gap: 1rem;
     color: white;
+   
 
 }
 
@@ -24,6 +25,18 @@
     width: 100%;
     flex-wrap: wrap;
 }
+
+
+
+.form-validate__button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Alice', serif;
+    letter-spacing: 2px;
+}
+
 .form-detail{
     display: flex;
     flex-direction: row;
@@ -32,6 +45,7 @@
     gap: 2rem;
     flex: 1;
     position: relative;
+    width: 100%;
 }
 .form-detail div{
     display: flex;
@@ -39,12 +53,13 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 0.5rem;
+    width: 100%;
 }
 
 .form-img {
     position: relative;
     display: inline-block;
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,47 +73,42 @@
 .form-img label {
     display: inline-block;
     padding: 8px 12px;
-    background-color: #ffff;
+    background-color: rgb(255, 254, 254);
+    font-weight: 700;
     border-radius: 4px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: black !important;
+    color: rgb(0, 0, 0) !important;
+    font-family: 'Alice', serif;
+    letter-spacing: 3px;
   }
 
 .form-detail-address{
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     gap: 2rem;
+    flex: 1;
+    width: 100%;
 }
 
 
 
 .form__address{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex:1
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
 }
 
- .form .form-detail .form__child-align{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    flex: 1;
-    
-    
-}
 
-.form__child-align p{
-    font-size: 20px;
-}
+
+
 
 .form__child-align h4{
     font-size: 18px;
@@ -119,19 +129,24 @@
 .btn-submit{
     
     width: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
 .btn-submit button{
     padding: 1rem;
-    width: 200px;
+    width: 150px;
     border-radius: 10px;
     border: none;
     outline: none;
     color: #ffff;
-    background-color: rgba(36, 171, 250, 0.932);
-    font-size: 18px
+    background-color: rgb(8 1 0);
+    font-size: 18px;
+    display:flex;
+    align-items: center;
+    justify-content:center ;
 }
 
 .btn-submit button:hover{
@@ -139,32 +154,48 @@
 }
 
 .form-detail label{
-    font-size: 18px;
-    font-weight: 700;
+  font-family: 'Alice', serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 3px;
 }
 .form-detail input{
     padding: 0.5rem;
-    width: 400px;
-    border-radius: 10px;
+    width: 100%;
+    border-radius: 20px;
     outline: none;
     border: none;
     font-size: 15px;
+    background-color: rgb(255 255 255 / 65%);
+
+
 }
 
 .form-detail-address label{
-    font-size: 18px;
-    font-weight: 700;
+  font-family: 'Alice', serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
 }
 
 .form-detail-address textarea{
-    padding: 1rem;
-    width: 400px;
-    border-radius: 10px;
-    outline: none;
-    border: 1px solid grey;
-    font-size: 15px;
-   
+  padding: 0.5rem;
+  width: 100%;
+  border-radius: 20px;
+  outline: none;
+  border: none;
+  font-size: 15px;
+  background-color: rgb(255 255 255 / 65%);
+  overflow: scroll;
+  
 }
+
+.form-detail-address textarea::-webkit-scrollbar{
+  width: 0;
+}
+
+
+
 
 .add:hover{
     transform: scale(1.1);
@@ -172,16 +203,33 @@
 .sub:hover{
     transform: scale(1.1);
 }
+.add-btn-div{
+  display: none;
+}
 
+.baptism-control{
+  display: flex;
+ justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.baptism-control button{
+  outline: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  letter-spacing: 2px;
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 2px;
+
+}
 
 @media screen and (max-width: 900px) {
-   .form-detail input{
-        width: 250px;
-   }
-   .form-detail-address textarea{
-    width: 250px;
-    overflow: hidden;
-   }
+ 
+ 
    .form-detail-address textarea ::-webkit-scrollbar{
     display: none;
    }
@@ -191,9 +239,21 @@
    .btn-submit button{
     padding: 0.5rem;
     width: 100px;
+   
    }
 }
 @media screen and (max-width: 600px){
+
+  .bg-child-parent .bg-child{
+    width: 100%;
+    height: 60px;
+  }
+  .add-btn-div{
+    width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
     .form-detail{
         flex-direction: column;
         gap: 0.2rem;
@@ -204,13 +264,24 @@
     .form-detail div{
         flex-direction: row;
         align-items:center ;
-        gap: 150px;
-        flex-wrap: wrap;
+        gap: 135px;
+        /* flex-wrap: wrap; */
+    }
+  .form-detail .add-btn-div{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: none;
     }
     .form-detail label{
        
         width: 0;
+        font-size: 14px;
        
+    }
+    .form-validate__button{
+      font-size: 14px;
     }
     .form-detail input{
         
@@ -221,11 +292,24 @@
     .form__address{
         flex-direction: row;
         align-items: center;
-        gap: 80px;
+        /* flex-wrap: wrap; */
+        gap: 65px;
     }
     .form{
-        padding: 0.2rem;
+        padding: 1.5rem;
     }
+    .form-detail-address label{
+      font-size: 14px;
+    }
+    .add-btn-div .button{
+      height: 25px;
+    }
+    .form-img label{
+      font-size: 14px;
+    }
+    .form-validate{
+      gap: 0.2rem;
+  }
 }
 
 @media screen and (max-width: 430px) {
@@ -242,6 +326,12 @@
         flex-direction: column;
         gap:0px;
         align-items: flex-start;
+    }
+    .add-btn-div .button{
+      height: 25px;
+    }
+    .form-img label{
+      font-size: 14px;
     }
     .form{
         margin-top:2px ;
@@ -282,12 +372,236 @@
     }
 }
 
+input::placeholder{
+  color: black;
+}
+
+textarea::placeholder{
+  color: black;
+}
+
 .placeholder-color::placeholder {
-    color: red; /* Replace with your desired color */
+    color: rgb(245, 43, 43); /* Replace with your desired color */
     
   }
 
-  .form .placeholder-color{
-    border: 2px solid red;
+ .form  .placeholder-color{
+    border: 0.5px solid rgba(243, 32, 32, 0.808);
+    font-size: 12px;
+    letter-spacing: 1.5px;
   }
+  
+  .link{
+    
+    color: blue;
+    cursor: pointer;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    background-color: white;
+    padding: 2px;
+    border-radius: 20px;
+    margin-bottom:2px ;
+    margin-right: 5px;
+    margin-left: 5px;
+    gap: 0.5rem;
+    width: 150px;
+  }
+
+
+.bg-child-parent{
+
+  width: 100%;
+
+}
+
+  .bg-child{
+  
+   border: radius 20px;
+  width: 100%;
+  height: 100px;
+    overflow: scroll;
+  }
+  .bg-child::-webkit-scrollbar{
+    width: 0;
+}
+
+
+
+.bg-child2{
+  display: grid;
+  grid-template-columns: 1f 1f ;
+  width: 100%;
+ 
+
+}
+
+
+
+
+
+
+
+  .close{
+    margin-right: 5px;
+    margin-left: 10px;
+  }
+
+  .form__child-align{
+    background-color: #ffff;
+    color: black;
+    border-radius: 20px;
+    position: relative;
+    width: 100px;
+    padding:5px ;
+  }
+
+  .iconAdd{
+    position: absolute;
+   color: #fff;
+    right: 0;
+    background-color:#fff;
+    top: 0;
+    height: 100%;
+    border-radius: 0 5px 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    color: rgb(104, 103, 103);
+    cursor: pointer;
+   
+
+  }
+
+  .button {
+    position: relative;
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    border: 1px solid white;
+    background-color: white;
+  }
+  
+  .button, .button__icon, .button__text {
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+  }
+  
+  .button .button__text {
+    -webkit-transform: translateX(30px);
+        -ms-transform: translateX(30px);
+            transform: translateX(30px);
+    color: black;
+    font-weight: 600;
+  }
+  
+  .button .button__icon {
+    position: absolute;
+    -webkit-transform: translateX(109px);
+        -ms-transform: translateX(109px);
+            transform: translateX(109px);
+    height: 100%;
+    width: 39px;
+    background-color: white;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  
+  .button .svg {
+    width: 30px;
+    stroke: black;
+  }
+  
+  .button:hover {
+    background: white;
+  }
+  
+  .button:hover .button__text {
+    color: transparent;
+  }
+  
+  .button:hover .button__icon {
+    width: 148px;
+    -webkit-transform: translateX(0);
+        -ms-transform: translateX(0);
+            transform: translateX(0);
+  }
+  
+  .button:active .button__icon{
+    background-color: white;
+  }
+  
+  .button:active {
+    border: 1px solid white;
+  }
+
+
+  .button-sumbit {
+    font-family: inherit;
+    font-size: 20px;
+    background: royalblue;
+    color: white;
+    padding: 0.7em 1em;
+    padding-left: 0.9em;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  
+  .button-sumbit span {
+    display: block;
+    margin-left: 0.3em;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .button-sumbit svg {
+    display: block;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .button-sumbit:hover .svg-wrapper {
+    animation: fly-1 0.6s ease-in-out infinite alternate;
+  }
+  
+  .button-sumbit:hover svg {
+    transform: translateX(1.2em) rotate(45deg) scale(1.1);
+  }
+  
+  .button-sumbit:hover span {
+    transform: translateX(5em);
+  }
+  
+  .button-sumbit:active {
+    transform: scale(0.95);
+  }
+  
+  @keyframes fly-1 {
+    from {
+      transform: translateY(0.1em);
+    }
+  
+    to {
+      transform: translateY(-0.1em);
+    }
+  }
+  
   

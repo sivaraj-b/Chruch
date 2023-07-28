@@ -3,12 +3,13 @@ import "./admin.css"
 import BackGround from '../../assets/Admin.jpg'
 import { FaUserLock } from 'react-icons/fa';
 import { RiLockPasswordFill } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 function Admin() {
   const [name ,setName ] =useState('')
   const [password,setPassword] = useState('')
   const [passwordErr , setPasswordErr] = useState(false);
   const [nameErr , setNameErr] = useState(false);
-
+  const navigate = useNavigate()
 
   const handleClick =(e)=>{
     e.preventDefault();
@@ -26,7 +27,9 @@ function Admin() {
     }
 
     if(name.trim() === 'admin' && password.trim() === 'admin'){
-      alert("Super")
+     
+      navigate('/dashboard')
+
     }
 
   }
