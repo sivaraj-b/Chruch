@@ -137,29 +137,22 @@ const handleClick = (row) => {
   
   const handleRemove = (row) => {
     // Implement the remove logic here
-    function removeNestedObject(nestedArray, idToRemove) {
-      function remove(obj) {
-        obj.child = obj.child.filter(child => {
-          if (child.id === idToRemove) {
-            return false; // Exclude the matching object from the child array
-          }
-          remove(child); // Recursively remove from the child array
-          return true; // Keep the non-matching objects in the child array
-        });
-      }
-    
-      nestedArray = nestedArray.filter(obj => {
+    function removeIdFromNestedArray(arr, idToRemove) {
+      return arr.filter((obj) => {
         if (obj.id === idToRemove) {
-          return false; // Exclude the matching object from the top-level array
+          return false; // Filter out the object with the specified id
         }
-        remove(obj); // Recursively remove from the child arrays
-        return true; // Keep the non-matching objects in the top-level array
+        if (obj.child && obj.child.length > 0) {
+          obj.child = removeIdFromNestedArray(obj.child, idToRemove); // Recursively call the function for child arrays
+        }
+        return true; // Keep all other objects
       });
-    
-      return nestedArray;
     }
+    
+   
+   
       console.log(row.id)
-      let RemovedData = removeNestedObject(data, row.id);
+      let RemovedData = removeIdFromNestedArray(data, row.id);
       console.log(RemovedData)
         dispatch({type: "REMOVED__DATA__IN__STATE__ARR",RemovedData})
 
@@ -172,19 +165,7 @@ const handleClick = (row) => {
 
   }
 
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      localStorage.removeItem('parentId');
-      localStorage.removeItem('tempData');
-      
-    };
   
-    window.addEventListener('beforeunload', handleBeforeUnload);
-  
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
 
 
   return (

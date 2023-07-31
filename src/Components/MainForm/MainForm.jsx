@@ -10,7 +10,7 @@ import ImageResizer from 'react-image-file-resizer';
 import {FcDownload} from 'react-icons/fc'
 import {BsTrash} from 'react-icons/bs'
 function MainForm({name}) {
-  const [once,setOnce] = useState(true);
+  const [once,setOnce] = useState(false);
   const [family,setFamily] =useState({
       id:"",
       name:"",
@@ -26,10 +26,12 @@ function MainForm({name}) {
       child:[],
   })
 //temp data
-const {tempData,dispatch,parentId,editId , isEdit, data} =useGlobalContext()
+const {tempData,dispatch,parentId,editId , isEdit, data, tempEditId} =useGlobalContext()
   const [isEditId,setIsEditId] = useState(editId);
 
-
+console.log(once)
+  console.log( tempEditId)
+  console.log(`parentId ${parentId}`)
   const [err,setErr] = useState({
     name:false,
     spouse:false,
@@ -59,26 +61,33 @@ const [editTemp,setEditTemp] = useState(false)
   const navigate =useNavigate()
  //take id from url
 let {parent,childId}=useParams()
+const findElement  = (arr, id) => {
+  let foundElement = null;
+  
+  arr.map((obj) => {
+    if (obj.id === id) {
+      foundElement = obj;
+    } else if (obj.child && obj.child.length > 0) {
+      const foundChild = findElement(obj.child, id);
+      if (foundChild) {
+        foundElement = foundChild;
+      }
+    }
+  });
+
+  return foundElement;
+};
+
+
+
+
 
 useEffect(()=>{
+ 
+
   if(childId){
     
-    const findElement  = (arr, id) => {
-      let foundElement = null;
-      
-      arr.map((obj) => {
-        if (obj.id === id) {
-          foundElement = obj;
-        } else if (obj.child && obj.child.length > 0) {
-          const foundChild = findElement(obj.child, id);
-          if (foundChild) {
-            foundElement = foundChild;
-          }
-        }
-      });
   
-      return foundElement;
-    };
 
       let foundDetail = findElement(tempData,childId)
         console.log(foundDetail)
@@ -137,7 +146,7 @@ useEffect(()=>{
       }
 
 
-},[childId,editId])
+},[childId,editId,tempEditId])
 
 
 useEffect(()=>{
@@ -252,6 +261,91 @@ useEffect(()=>{
 },[editId])
 
 
+useEffect(()=>{
+  if(tempEditId && isEdit){
+    let foundDetail = findElement(tempData,tempEditId)
+    console.log(foundDetail)
+  if(foundDetail){
+  console.log(foundDetail)
+  setFamily({...family,
+    id:foundDetail.id,
+    name:foundDetail.name,
+    spouse:foundDetail.spouse,
+    gender:foundDetail.gender,
+    phoneNo:foundDetail.phoneNo,
+    weddingDay:foundDetail.weddingDay,
+    address:foundDetail.address,
+    child:foundDetail.child,
+    dob:foundDetail.dob,
+    isMarried:foundDetail.isMarried,
+    isBaptism:foundDetail.isBaptism,
+    baptism:foundDetail.baptism,
+  
+  
+  })
+  } 
+    return
+  }
+},[tempEditId])
+
+useEffect(()=>{
+  console.log("ONCE")
+  if(once && !parent){
+  
+    let foundDetail = findElement(tempData,parentId)
+    console.log(foundDetail)
+  if(foundDetail){
+  console.log(foundDetail)
+  setFamily({...family,
+    id:foundDetail.id,
+    name:foundDetail.name,
+    spouse:foundDetail.spouse,
+    gender:foundDetail.gender,
+    phoneNo:foundDetail.phoneNo,
+    weddingDay:foundDetail.weddingDay,
+    address:foundDetail.address,
+    child:foundDetail.child,
+    dob:foundDetail.dob,
+    isMarried:foundDetail.isMarried,
+    isBaptism:foundDetail.isBaptism,
+    baptism:foundDetail.baptism,
+  
+  
+  })
+  } 
+    return
+  }
+
+  if(!parent && tempData){
+    console.log("INNNNNNNNN")
+    let foundDetail = findElement(tempData,tempEditId)
+    console.log(foundDetail)
+  if(foundDetail){
+  console.log(foundDetail)
+  setFamily({...family,
+    id:foundDetail.id,
+    name:foundDetail.name,
+    spouse:foundDetail.spouse,
+    gender:foundDetail.gender,
+    phoneNo:foundDetail.phoneNo,
+    weddingDay:foundDetail.weddingDay,
+    address:foundDetail.address,
+    child:foundDetail.child,
+    dob:foundDetail.dob,
+    isMarried:foundDetail.isMarried,
+    isBaptism:foundDetail.isBaptism,
+    baptism:foundDetail.baptism,
+  
+  
+  })
+  } 
+    return
+
+  }
+
+
+},[once])
+
 const compressImage = (file) => {
   return new Promise((resolve) => {
     ImageResizer.imageFileResizer(
@@ -357,20 +451,74 @@ if(family.spouse.trim()){
 // Add Child Function 
 const addChild=(e)=>{
   e.preventDefault();
+  const addChildToElement = (arr, id, newChild) => {
+
+    return arr.map((obj) => {
+      if (obj.id === id) {
+        return { ...obj,...family,id:childId, child: [...obj.child, newChild] };
+      } else if (obj.child && obj.child.length > 0) {
+        return { ...obj, child: addChildToElement(obj.child, id, newChild) };
+      }
+      return obj;
+    });
+  };
+
+if( tempEditId){
+  
+  console.log("IS SHANKARRRRR ADDD CHILD")
+  const addChildToElementTemp = (arr, id, newChild) => {
+
+    return arr.map((obj) => {
+      if (obj.id === id) {
+        return { ...obj,...family,id:tempEditId, child: [...obj.child, newChild] };
+      } else if (obj.child && obj.child.length > 0) {
+        return { ...obj, child:  addChildToElementTemp(obj.child, id, newChild) };
+      }
+      return obj;
+    });
+  };
+   console.log("INNNN PLZZZZZZZ") 
+  let AddChild = {id:uuidv4(),
+           
+    name:"",
+    spouse:"",
+    address:"",
+    phoneNo:"",
+    dob:"",
+    weddingDay:"",
+    gender:"male",
+    isBaptism:false,
+    baptism:"",
+    isMarried:false,
+    child:[],
+  
+  }
+  let ArrData = addChildToElementTemp(tempData,tempEditId,AddChild)
+  console.log(ArrData)
+  dispatch({type:"ADD__CHILD__IN__TEMP__EDIT__ELE",ArrData})
+  navigate(`/child/${tempEditId}/${AddChild.id}`)
+  setFamily({
+    id:"",
+    name:"",
+    spouse:"",
+    address:"",
+    phoneNo:"",
+    dob:"",
+    weddingDay:"",
+    gender:"male",
+    isBaptism:false,
+    baptism:"",
+    isMarried:false,
+    child:[],   
+  })
+
+  return
+}
+
 
     if(parent){
 
-      const addChildToElement = (arr, id, newChild) => {
-
-        return arr.map((obj) => {
-          if (obj.id === id) {
-            return { ...obj,...family,id:childId, child: [...obj.child, newChild] };
-          } else if (obj.child && obj.child.length > 0) {
-            return { ...obj, child: addChildToElement(obj.child, id, newChild) };
-          }
-          return obj;
-        });
-      };
+     
           let AddChild = {id:uuidv4(),
            
             name:"",
@@ -526,8 +674,6 @@ const RemovedDataTemp = family.child.filter((item)=>item.id !== id)
 
 
 
-console.log(editTemp)
-
 
 
 
@@ -556,6 +702,182 @@ const handleClick=(e)=>{
       return nestedArray;
     }
 
+
+    if(tempEditId){
+        if(!parent){
+          if(family.isMarried){
+            if(family.name && family.dob && family.phoneNo && family.address && family.spouse&&family.weddingDay){
+
+              let editData = editNestedArray(tempData,tempEditId,family)
+              setEditTemp(false)
+              dispatch({type:'EDIT__TEMP__CHILD_ONCE',editData,})
+              setFamily({
+                id:"",
+                name:"",
+                spouse:"",
+                address:"",
+                phoneNo:"",
+                dob:"",
+                weddingDay:"",
+                gender:"male",
+                isBaptism:false,
+                baptism:"",
+                isMarried:false,
+                child:[], 
+              })
+              setOnce(true)
+              navigate(-1)
+              return
+            }else{
+                if(!family.name.trim()){
+                    setErr((prev=>{
+                        return {...prev,name:true}
+                    }))
+                }
+               
+                if(!family.address.trim){
+                  setErr(prev=>{
+                      return{...prev,address:true}
+                  })
+                }
+                if(!family.phoneNo.trim()){
+                  setErr({...err,phoneNo:true})
+                }
+                if(!family.dob.trim()){
+                  setErr(prev=>{
+                    return{...prev,dob:true}
+                })
+                }
+                if(!family.weddingDay.trim()){
+                  setErr(prev=>{
+                    return{...prev,weddingDay:true}
+                })
+                }
+                if(!family.spouse.trim()){
+                  console.log(family.spouse)
+                  setErr(prev=>{
+                    return{...prev,spouse:true}
+                })
+                  
+                }
+                    return
+               
+            }
+
+          }else{
+            if(family.name && family.dob && family.phoneNo && family.address){
+
+              let editData = editNestedArray(tempData,parent,family)
+              setEditTemp(false)
+              dispatch({type:'EDIT__TEMP__CHILD_ONCE',editData,})
+              setFamily({
+                id:"",
+                name:"",
+                spouse:"",
+                address:"",
+                phoneNo:"",
+                dob:"",
+                weddingDay:"",
+                gender:"male",
+                isBaptism:false,
+                baptism:"",
+                isMarried:false,
+                child:[], 
+              })
+              setOnce(true)
+              navigate(-1)
+              return
+            }else{
+                if(!family.name.trim()){
+                    setErr((prev=>{
+                        return {...prev,name:true}
+                    }))
+                }
+               
+                if(!family.address.trim){
+                  setErr(prev=>{
+                      return{...prev,address:true}
+                  })
+                }
+                if(!family.phoneNo.trim()){
+                  setErr({...err,phoneNo:true})
+                }
+                if(!family.dob.trim()){
+                  setErr(prev=>{
+                    return{...prev,dob:true}
+                })
+                }
+                
+                    return
+               
+            }
+          }
+        }else{
+              console.log("ALEXXXXXXXXXX")
+              const addChildToElement = (arr, id, newChild) => {
+                return arr.map((obj) => {
+                  if (obj.id === id) {
+                    return { ...obj, child: [...obj.child, newChild] };
+                  } else if (obj.child && obj.child.length > 0) {
+                    return { ...obj, child: addChildToElement(obj.child, id, newChild) };
+                  }
+                  return obj;
+                });
+              };
+              
+          if(family.name && family.dob && family.phoneNo && family.address){
+
+            let editData =editNestedArray(tempData,childId,family)
+            setEditTemp(false)
+            console.log(editData)
+            dispatch({type:'ADD__CHILD__IN__TEMP__EDIT__ELE',ArrData:editData,})
+            setFamily({
+              id:"",
+              name:"",
+              spouse:"",
+              address:"",
+              phoneNo:"",
+              dob:"",
+              weddingDay:"",
+              gender:"male",
+              isBaptism:false,
+              baptism:"",
+              isMarried:false,
+              child:[], 
+            })
+            setOnce(true)
+            navigate(-1)
+            return
+          }else{
+              if(!family.name.trim()){
+                  setErr((prev=>{
+                      return {...prev,name:true}
+                  }))
+              }
+             
+              if(!family.address.trim){
+                setErr(prev=>{
+                    return{...prev,address:true}
+                })
+              }
+              if(!family.phoneNo.trim()){
+                setErr({...err,phoneNo:true})
+              }
+              if(!family.dob.trim()){
+                setErr(prev=>{
+                  return{...prev,dob:true}
+              })
+              }
+              
+                  return
+             
+          }
+          
+
+
+        }
+        return
+    }
 
 
         if(isEdit && editId && editTemp){
@@ -1386,7 +1708,7 @@ const handleImageDownload = (e) => {
                                <div className='link' onClick={()=>{
                                  setIsEditId(item.id)
                                  setEditTemp(true)
-                                 dispatch({type:"EDIT__USER",editId:item.id})
+                                 dispatch({type:"EDIT__TEMP__USER",editId:item.id})
                                  setFamily({
                                    id:"",
                                    name:"",

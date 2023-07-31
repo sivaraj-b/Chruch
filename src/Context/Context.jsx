@@ -15,6 +15,7 @@ const initialState = {
     data:FamilyData,
     tempData:[],
     editId:'',
+    tempEditId:'',
     isEdit:false,
     parentId:parentTrack,
 }

@@ -12,11 +12,10 @@ function App() {
     const handleBeforeUnload = () => {
       localStorage.removeItem('parentId');
       localStorage.removeItem('tempData');
-      
     };
-  
+    
     window.addEventListener('beforeunload', handleBeforeUnload);
-  
+    
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };

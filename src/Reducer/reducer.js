@@ -6,10 +6,18 @@ export const reducer = (state,action)=>{
                 
             return {...state,tempData:action.details,parentId:action.parent}
             
-    }else if(action.type === 'REMOVED__DATA__IN__TEMP__ARR'){
+    }else if(action.type === 'EDIT__TEMP__USER'){
+        return {...state,  tempEditId:action.editId,isEdit:true}
+
+    }else if(action.type === 'EDIT__TEMP__CHILD_ONCE'){
+        return{...state,tempData:action.editData,isEdit:false,tempEditId:""}
+    } else if(action.type === 'REMOVED__DATA__IN__TEMP__ARR'){
                     console.log(action.RemovedDataTemp)
             return{...state,tempData:action.RemovedDataTemp}
 
+    }else if(action.type === 'ADD__CHILD__IN__TEMP__EDIT__ELE'){
+                        console.log(action.ArrData)
+                return{...state,tempData:action.ArrData,isEdit:false}
     }else if(action.type === 'ADD__CHILD__IN__STATE__ELE'){
         
 
@@ -51,7 +59,7 @@ export const reducer = (state,action)=>{
                 return {...state, editId:action.editId,isEdit:true}
     }else if(action.type === 'REMOVED__DATA__IN__STATE__ARR'){
                 
-        return{...state,data:[...state.data,...action.RemovedData]}
+        return{...state,data:action.RemovedData}
     }else if (action.type ="EDIT__DATA"){
         
 
