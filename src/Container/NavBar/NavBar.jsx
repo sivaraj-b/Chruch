@@ -2,11 +2,19 @@ import React, { useRef, useState } from 'react'
 import './navbar.css'
 import {BsSearch} from 'react-icons/bs'
 import Profile from '../../assets/Profile.jpg'
+import { useNavigate } from 'react-router-dom';
+
 
 function Navbar() {
 const [inputStyle,setInputStyle] = useState(false)
 const inputRef = useRef(null);
+const navigate = useNavigate()
+
 console.log(inputStyle)
+const handleClick =(e)=>{
+    e.preventDefault();
+      navigate('/form')
+  }
   return (
     <div className='navbar'>
         <div className='navbar__name'>
@@ -28,7 +36,7 @@ console.log(inputStyle)
                 <BsSearch className={inputStyle?'navbar__content-icon-click':'navbar__content-icon'}/>
                 <input type='text' placeholder='Search Name' ref={inputRef} disabled={!inputStyle} />
             </div>
-            <button type='button'>Create User</button>
+            <button onClick={handleClick} type='button'>Create User</button>
         </div>
         
     </div>
