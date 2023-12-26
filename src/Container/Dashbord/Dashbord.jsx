@@ -1,205 +1,162 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from 'react'
 import './dashbord.css'
-import DataTable from "react-data-table-component";
-import { useGlobalContext } from "../../Context/Context";
-import {AiOutlineUserAdd} from 'react-icons/ai'
-import {BiEdit} from 'react-icons/bi'
-import {RiDeleteBin6Line} from 'react-icons/ri'
-import {Link, useNavigate} from 'react-router-dom'
-import { saveAs } from 'file-saver';
-
-
+import { Navbar } from '../../Container'
+import {FaUser} from 'react-icons/fa'
+import {GiRotaryPhone} from 'react-icons/gi'
+import {MdDelete} from 'react-icons/md'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { data } from '../../data'
 function Dashbord() {
- 
-    const navigate = useNavigate()
+const [currentPage,setCurrentPage] = useState(1)
+const [deleteConfirmForm,setDeleteConfirmForm] = useState(false)
+const recordsPerPage = 5;
+const lastIndex = currentPage *recordsPerPage
+const firstIndex = lastIndex-recordsPerPage
+const records =data.slice(firstIndex,lastIndex);
+const npage = Math.ceil(data.length/recordsPerPage)
+const numbers = [...Array(npage+1).keys()].slice(1)
 
 
-  const {data,dispatch} = useGlobalContext()
-  function flattenArray(arr) {
-    let result = [];
-  
-    function flattenHelper(arr) {
-      arr.forEach(item => {
-        result.push(item);
-        if (item.child && item.child.length > 0) {
-          flattenHelper(item.child);
-        }
+const prePage = ()=>{
+  if(currentPage !== 1){
+    setCurrentPage(currentPage -1)
+   
+  }else{
+    toast.warn('👋 There is no previous page!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
       });
-    }
-  
-    flattenHelper(arr);
-    return result;
   }
-
-  
-
-  const flattenedArray = flattenArray(data);
-
-
-  const [datas, setData] = useState(flattenedArray);
-  const [filterData , setFilterData] = useState(flattenedArray)
-
-  useEffect(()=>{
-
-   let Reset = flattenArray(data)
-    setData(Reset)
-
-  },[data]);
-
- 
-
-  const customStyle = {
-    headRow: {
-      style: {
-        backgroundColor: 'blue',
-        color: 'white',
-        fontWeight: '900',
-        fontSize: '1.5em',
-        boxShadow: "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
-      },
-    },
-   
-  };
-const handleDownload = async (baptism) => {
-  try {
-    const response = await fetch(baptism);
-    const blob = await response.blob();
-    const fileName = 'image.jpg'; // You can change the file extension as needed based on the image type
-    saveAs(blob, fileName);
-  } catch (error) {
-    console.error('Error downloading the image:', error);
-  }
-};
-
-
-
-const handleClick = (row) => {
-  if (row.baptism) {
-    handleDownload(row.baptism);
-  }
-};
-
-
-  const columns = [
-    {
-      name: 'Id',
-      selector: 'id',
-      sortable: true,
-      className: 'custom-id-column'
-    },
-    {
-      name: "Name",
-      selector: "name",
-      sortable: true,
-      style: {
-        fontSize: '1.2em' // Change the font size here
-      }
-    },
-    {
-      name: "Baptism",
-      cell: (row) =>
-        row.baptism ? (
-          <button className="img-certificate"
-           
-            onClick={() => handleClick(row)}
-          
-          >
-              Certificate
-          </button>
-        ) : (
-          <span style={{color:'black'}}>No Certificate</span>
-        ),
-    },
-    {
-      name: "Action",
-      cell: (row) => (
-        <div className="btn-dashboard">
-          <button className="edit-btn" onClick={() => handleEdit(row)}><BiEdit fontSize={20}/></button>
-          <button className="remove-btn" onClick={() => handleRemove(row)}><RiDeleteBin6Line fontSize={20}/></button>
-        </div>
-      ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-    },
-  ]
-  
-  
-  
-  const handleEdit = (row) => {
-    console.log("INNNNNNNNNN")
-    dispatch({type:"EDIT__USER",editId:row.id})
-        navigate(`/form`)
-
-
-  };
-  
-  const handleRemove = (row) => {
-    // Implement the remove logic here
-    function removeIdFromNestedArray(arr, idToRemove) {
-      return arr.filter((obj) => {
-        if (obj.id === idToRemove) {
-          return false; // Filter out the object with the specified id
-        }
-        if (obj.child && obj.child.length > 0) {
-          obj.child = removeIdFromNestedArray(obj.child, idToRemove); // Recursively call the function for child arrays
-        }
-        return true; // Keep all other objects
+}
+const changeCurrentPage = (id)=>{
+  setCurrentPage(id)
+}
+const nextPage = ()=>{
+  if(currentPage !== npage){
+    setCurrentPage(currentPage + 1)
+  }else{
+    toast.warn('👋 You Are in Last Page!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
       });
-    }
-    
-   
-   
-      console.log(row.id)
-      let RemovedData = removeIdFromNestedArray(data, row.id);
-      console.log(RemovedData)
-        dispatch({type: "REMOVED__DATA__IN__STATE__ARR",RemovedData})
-
-  };
-  
-
-  const handleFilter =(e)=>{
-      const newData = filterData.filter((row)=>row.name.toLowerCase().includes(e.target.value.toLowerCase()) )
-      setData(newData)
-
   }
+}
 
-  
+const deleteHandler = (id)=>{
+  setDeleteConfirmForm(true)
+}
+
+const confirmDeleteHandler = (action)=>{
+    if(action === 'yes'){
+      setDeleteConfirmForm(false)
+      toast.success('🦄 successfully Deleted!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+    }
+    if(action === 'no'){
+      setDeleteConfirmForm(false)
+    }
+}
 
 
   return (
-      <div className="dashboard">
-          <nav className="dashboard-nav">
-              <div>
-                <h1>FAMILY</h1>
-                <div>
-                <AiOutlineUserAdd fontSize={30}/>
-                <Link  to='/form'>Create</Link>
+    <div className='dashboard'>
+        <div>
+            <Navbar/>
+        </div>
+        <div className='dashboard-scroll'>
+            <table >
+                <thead className='dashboard__heading'>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>PhoneNumber</th>
+                  <th>Address</th>
+                  <th>Action</th>
+                </thead>
+                <tbody>
+                  {records.map((data,index)=>{
+                    return<tr className={`bordered-row ${index == 0 || index % 2 == 0 ?'even':'odd'}`} key={data.id}>
+                        <td className='dashboard__body'>{data.id}</td>
+                        <td className='dashboard__body'>
+                           
+                           <FaUser color='#f9ff00f2'/> {data.name}
+                            
+                        </td>
+                        <td className='dashboard__body'>
+                        
+                           <GiRotaryPhone color='blue'/>
+                            35253454353453
+                          
+                        </td>
+                        <td className='dashboard__body width' >ATTN: CEO David Kenner Kenner Group Inc.85 Bradford Lane Vincentown, NJ 08120</td>
+                        <td onClick={()=>deleteHandler(data.id)} className='dashboard__body-delete'><MdDelete/></td>
+                    </tr>
+                  })}
+                </tbody>
+            </table>
+            <nav>
+               <ul className='pagination'>
+                  <li onClick={prePage}>
+                      Prev
+                  </li>
+                  {numbers.map((page,index)=>{
+                    return<li className={currentPage === page?"active":""} onClick={()=>changeCurrentPage(page)} key={index}>
+                        {page}
+                    </li>
+                  })}
+                   <li onClick={nextPage}>
+                      Next
+                  </li>
+               </ul>
+            </nav>
+        </div>
+            {
+              deleteConfirmForm&&(
+                <div className='dashboard__confirm-delete'>
+                <div className='dashboard__confirm-delete__container'>
+                    <h3> Are you sure you want to delete ? </h3>
+                    <div className='dashboard__confirm-delete__container-button'>
+                        <button onClick={()=>confirmDeleteHandler('yes')} type='button'>Yes</button>
+                        <button onClick={()=>confirmDeleteHandler('no')} type='button'>No</button>
+                    </div>
                 </div>
-              </div>
-          </nav>
-          <div className="input-div">
-              <input placeholder="search User Name"  onChange={handleFilter}/>
-          </div>
-         <div className="padding-table">
-         <DataTable
-    
-    columns={columns}
-    data={datas}
-    customStyles={customStyle}
-    pagination
-    highlightOnHover
-
-  />
-         </div>
-
       </div>
+              )
+            }
+            <ToastContainer
+position="top-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+/>
+    </div>
   )
 }
 
 export default Dashbord
-
-
-
-
